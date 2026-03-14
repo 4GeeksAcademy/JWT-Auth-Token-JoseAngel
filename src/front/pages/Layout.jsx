@@ -1,17 +1,18 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import ScrollToTop from "./component/scrollToTop";
 
-import ScrollToTop from "../component/ScrollToTop"; 
-import { Navbar } from "../component/Navbar";
-import { Footer } from "../component/Footer";
+import { Home } from "./pages/home";
+import { Login } from "./pages/Login.jsx";
+import { Signup } from "./pages/Signup.jsx";
+import { Private } from "./pages/Private.jsx";
 
+import injectContext from "./store/appContext";
 
-import { Home } from "./Home";
-import { Login } from "./Login.jsx";
-import { Signup } from "./Signup.jsx";
-import { Private } from "./Private.jsx";
+import { Navbar } from "./component/navbar";
+import { Footer } from "./component/footer";
 
-export const Layout = () => {
+const Layout = () => {
     const basename = process.env.BASENAME || "";
 
     return (
@@ -32,3 +33,5 @@ export const Layout = () => {
         </div>
     );
 };
+
+export default injectContext(Layout);
