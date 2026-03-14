@@ -10,6 +10,7 @@ from api.models import db
 from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
+from datetime import timedelta
 
 # from models import Person
 
@@ -41,7 +42,7 @@ setup_commands(app)
 app.register_blueprint(api, url_prefix='/api')
 
 # Handle/serialize errors like a JSON object
-
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
 
 @app.errorhandler(APIException)
 def handle_invalid_usage(error):
