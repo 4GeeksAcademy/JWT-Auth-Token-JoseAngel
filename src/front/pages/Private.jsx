@@ -4,12 +4,12 @@ import { useNavigate } from "react-router-dom";
 export const Private = () => {
     const navigate = useNavigate();
     // Creamos una variable para guardar la info que nos responda el backend
-    const [infoSecreta, setInfoSecreta] = useState(null); 
+    const [infoSecreta, setInfoSecreta] = useState(null);
 
     // Este useEffect se ejecuta una sola vez cuando el usuario entra a la página /private
     useEffect(() => {
         const token = sessionStorage.getItem("token");
-        
+
         if (!token) {
             // Si no hay token, lo mandamos al login inmediatamente
             navigate("/login");
@@ -21,10 +21,10 @@ export const Private = () => {
 
     // Aquí colocamos la función que me preguntaste
     const obtenerInfoPrivada = async () => {
-        const token = sessionStorage.getItem("token"); 
+        const token = sessionStorage.getItem("token");
 
         try {
-            const response = await fetch(process.env.BACKEND_URL + "/api/private-info", {
+            const response = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/private-info", {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -36,7 +36,7 @@ export const Private = () => {
                 const data = await response.json();
                 console.log("Información privada recibida:", data);
                 // Guardamos los datos en el estado de React para poder mostrarlos en el HTML
-                setInfoSecreta(data); 
+                setInfoSecreta(data);
             } else {
                 console.log("Error o token expirado. El usuario debe iniciar sesión de nuevo.");
                 // Si el token expiró o es inválido, limpiamos la sesión y mandamos al login

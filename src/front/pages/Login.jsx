@@ -9,7 +9,7 @@ export const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const response = await fetch(process.env.BACKEND_URL + "/api/token", {
+        const response = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/token", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email, password })
@@ -17,7 +17,7 @@ export const Login = () => {
 
         if (response.ok) {
             const data = await response.json();
-            sessionStorage.setItem("token", data.token); 
+            sessionStorage.setItem("token", data.token);
             navigate("/private");
         } else {
             alert("Credenciales inválidas");
@@ -28,21 +28,21 @@ export const Login = () => {
         <div className="container mt-5">
             <h2>Iniciar Sesión</h2>
             <form onSubmit={handleSubmit}>
-                <input 
-                    type="email" 
-                    className="form-control mb-3" 
-                    placeholder="Correo" 
-                    value={email} 
-                    onChange={(e) => setEmail(e.target.value)} 
-                    required 
+                <input
+                    type="email"
+                    className="form-control mb-3"
+                    placeholder="Correo"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
                 />
-                <input 
-                    type="password" 
-                    className="form-control mb-3" 
-                    placeholder="Contraseña" 
-                    value={password} 
-                    onChange={(e) => setPassword(e.target.value)} 
-                    required 
+                <input
+                    type="password"
+                    className="form-control mb-3"
+                    placeholder="Contraseña"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
                 />
                 <button type="submit" className="btn btn-success">Ingresar</button>
             </form>
