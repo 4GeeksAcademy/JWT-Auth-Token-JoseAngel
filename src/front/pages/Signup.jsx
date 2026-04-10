@@ -38,6 +38,7 @@ export const Signup = () => {
     return (
         <div className="container mt-5" style={{ maxWidth: "420px" }}>
             <h2>Registro</h2>
+            <p className="text-secondary mb-3">Crea un usuario para probar el acceso privado.</p>
             <form onSubmit={handleSubmit}>
                 <input
                     type="email"

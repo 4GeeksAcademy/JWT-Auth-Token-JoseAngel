@@ -39,6 +39,7 @@ export const Login = () => {
     return (
         <div className="container mt-5" style={{ maxWidth: "420px" }}>
             <h2>Iniciar sesion</h2>
+            <p className="text-secondary mb-3">Accede con tu correo y contrasena.</p>
             <form onSubmit={handleSubmit}>
                 <input
                     type="email"

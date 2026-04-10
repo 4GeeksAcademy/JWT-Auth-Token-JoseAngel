@@ -5,13 +5,18 @@ from werkzeug.security import generate_password_hash
 
 api = Blueprint('api', __name__)
 
+
+def normalize_email(email):
+    return email.strip().lower() if isinstance(email, str) else email
+
+
 @api.route('/signup', methods=['POST'])
 def signup():
-    body = request.get_json()
+    body = request.get_json(silent=True)
     if body is None:
         return jsonify({"msg": "Body cannot be empty"}), 400
 
-    email = body.get('email')
+    email = normalize_email(body.get('email'))
     password = body.get('password')
 
     if not email or not password:
@@ -21,11 +26,8 @@ def signup():
     if existing_user:
         return jsonify({"msg": "User already exists"}), 400
 
-    new_user = User(
-        email=email,
-        is_active=True,
-        )
-    new_user.password = generate_password_hash(body["password"])
+    new_user = User(email=email, is_active=True)
+    new_user.password = generate_password_hash(password)
 
     db.session.add(new_user)
     db.session.commit()
@@ -34,8 +36,12 @@ def signup():
 
 @api.route('/token', methods=['POST'])
 def create_token():
-    email = request.json.get('email', None)
-    password = request.json.get('password', None)
+    body = request.get_json(silent=True) or {}
+    email = normalize_email(body.get('email'))
+    password = body.get('password')
+
+    if not email or not password:
+        return jsonify({"msg": "Email and password are required"}), 400
 
     user = User.query.filter_by(email=email).one_or_none()
     if user is None or not user.check_password(password):
@@ -56,5 +62,5 @@ def private_info():
     return jsonify({
         "id": user.id,
         "email": user.email,
-        "msg": "Si lees esto es porque tu token es valido."
+        "msg": "Sesion valida"
     }), 200

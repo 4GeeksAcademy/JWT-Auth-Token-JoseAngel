@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 export const Private = () => {
     const navigate = useNavigate();
-    const [infoSecreta, setInfoSecreta] = useState(null);
+    const [userData, setUserData] = useState(null);
     const [error, setError] = useState("");
 
     useEffect(() => {
@@ -14,10 +14,10 @@ export const Private = () => {
             return;
         }
 
-        obtenerInfoPrivada();
+        loadPrivateData();
     }, [navigate]);
 
-    const obtenerInfoPrivada = async () => {
+    const loadPrivateData = async () => {
         const token = sessionStorage.getItem("token");
 
         try {
@@ -33,7 +33,7 @@ export const Private = () => {
             const data = await response.json();
 
             if (response.ok) {
-                setInfoSecreta(data);
+                setUserData(data);
                 return;
             }
 
@@ -48,16 +48,16 @@ export const Private = () => {
     return (
         <div className="container mt-5 text-center">
             <h1>Area privada</h1>
-            <p>Si estas viendo esto, es porque tu token sigue siendo valido.</p>
+            <p>Este contenido solo se muestra cuando el token sigue siendo valido.</p>
 
-            {infoSecreta ? (
+            {userData ? (
                 <div className="alert alert-success mt-4">
-                    <h3>Datos desde el backend</h3>
-                    <p><strong>Mensaje:</strong> {infoSecreta.msg}</p>
-                    <p><strong>Email registrado:</strong> {infoSecreta.email}</p>
+                    <h3>Sesion iniciada</h3>
+                    <p><strong>Mensaje:</strong> {userData.msg}</p>
+                    <p><strong>Email:</strong> {userData.email}</p>
                 </div>
             ) : (
-                <p className="text-muted mt-4">Cargando informacion privada...</p>
+                <p className="text-muted mt-4">Cargando...</p>
             )}
 
             {error && <div className="alert alert-danger mt-3">{error}</div>}

@@ -6,9 +6,9 @@ export const Home = () => {
 
     return (
         <div className="container py-5 text-center" style={{ maxWidth: "720px" }}>
-            <h1 className="display-5 mb-3">Demo basica de autenticacion con JWT</h1>
+            <h1 className="display-5 mb-3">JWT Auth</h1>
             <p className="lead text-secondary">
-                Registro, inicio de sesion, ruta privada y cierre de sesion en una aplicacion React + Flask.
+                Proyecto base con registro, login y una ruta privada usando React y Flask.
             </p>
             <div className="d-flex gap-3 justify-content-center mt-4 flex-wrap">
                 <Link to={token ? "/private" : "/login"} className="btn btn-success">
