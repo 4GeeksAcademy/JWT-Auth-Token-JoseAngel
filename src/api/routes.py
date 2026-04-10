@@ -1,7 +1,7 @@
 from flask import request, jsonify, Blueprint
 from api.models import db, User
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import generate_password_hash
 
 api = Blueprint('api', __name__)
 
@@ -30,33 +30,31 @@ def signup():
     db.session.add(new_user)
     db.session.commit()
 
-    return jsonify({"msg": "Cuenta Creada", "user": new_user.serialize()}), 201
+    return jsonify({"msg": "Cuenta creada", "user": new_user.serialize()}), 201
 
 @api.route('/token', methods=['POST'])
 def create_token():
     email = request.json.get('email', None)
     password = request.json.get('password', None)
 
-    user = User.query.filter_by(email=email,).one_or_none()
+    user = User.query.filter_by(email=email).one_or_none()
     if user is None or not user.check_password(password):
         return jsonify({"msg": "Bad email or password"}), 401
 
     access_token = create_access_token(identity=user.id)
-    return jsonify({ "token": access_token, "user_id": user.id }), 200
+    return jsonify({"token": access_token, "user_id": user.id}), 200
 
-@api.route("/private", methods = ["GET"])
-@jwt_required
+@api.route('/private', methods=['GET'])
+@jwt_required()
 def private_info():
-
     current_user = get_jwt_identity()
-
     user = User.query.get(current_user)
 
     if user is None:
-        return jsonify({"msg": "usuario no encontrado"})
-    
-    return jsonify ({
+        return jsonify({"msg": "Usuario no encontrado"}), 404
+
+    return jsonify({
         "id": user.id,
-        "email" : user.email,
-        "msg" : "si lees esto es porque eres un usuario con un token valido"
+        "email": user.email,
+        "msg": "Si lees esto es porque tu token es valido."
     }), 200

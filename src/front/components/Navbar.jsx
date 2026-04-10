@@ -7,22 +7,22 @@ export const Navbar = () => {
 
     const handleLogout = () => {
         sessionStorage.removeItem("token");
-        navigate("/login");
+        navigate("/");
     };
 
     return (
         <nav className="navbar navbar-light bg-light mb-3 px-3">
             <Link to="/">
-                <span className="navbar-brand mb-0 h1">Mi Aplicación</span>
+                <span className="navbar-brand mb-0 h1">JWT Demo</span>
             </Link>
             <div className="ml-auto">
                 {token ? (
                     <button className="btn btn-danger" onClick={handleLogout}>
-                        Cerrar Sesión
+                        Cerrar sesion
                     </button>
                 ) : (
                     <Link to="/login">
-                        <button className="btn btn-primary">Iniciar Sesión</button>
+                        <button className="btn btn-primary">Iniciar sesion</button>
                     </Link>
                 )}
             </div>
