@@ -5,6 +5,7 @@ import os
 from datetime import timedelta
 
 from flask import Flask, jsonify, send_from_directory
+from flask_cors import CORS
 from flask_migrate import Migrate
 from flask_jwt_extended import JWTManager
 from api.utils import APIException, generate_sitemap
@@ -18,6 +19,19 @@ static_file_dir = os.path.join(os.path.dirname(
     os.path.realpath(__file__)), '../dist/')
 app = Flask(__name__)
 app.url_map.strict_slashes = False
+
+frontend_origin = os.getenv("FRONTEND_ORIGIN")
+allowed_origins = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "http://localhost:5174",
+    "http://127.0.0.1:5174",
+]
+if frontend_origin:
+    allowed_origins.append(frontend_origin.rstrip("/"))
+CORS(app, resources={r"/api/*": {"origins": allowed_origins}})
 
 # database configuration
 db_url = os.getenv("DATABASE_URL")
